@@ -76,8 +76,14 @@ WSGI_APPLICATION = 'CurriculumDesign.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'djongo',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': 'mongodb-attsys',
+        # 'ENFORCE_SCHEMA': False,
+        # 'CLIENT': {
+        #     'host': 'mongodb+srv://<username>:<password>@<AtlasCluster>/<myDatabase>?retryWrites=true&w=majority'
+        # }
     }
 }
 
