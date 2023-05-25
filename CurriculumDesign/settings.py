@@ -82,7 +82,12 @@ DATABASES = {
         'NAME': 'mongodb-attsys',
         # 'ENFORCE_SCHEMA': False,
         # 'CLIENT': {
-        #     'host': 'mongodb+srv://<username>:<password>@<AtlasCluster>/<myDatabase>?retryWrites=true&w=majority'
+        #     'host': 'host-name or ip address',
+        #     'port': port_number,
+        #     'username': 'db-username',
+        #     'password': 'password',
+        #     'authSource': 'db-name',
+        #     'authMechanism': 'SCRAM-SHA-1'
         # }
     }
 }
