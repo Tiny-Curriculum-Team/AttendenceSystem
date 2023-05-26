@@ -19,6 +19,9 @@ def start_record(request):
         data = inference(frame)
         wirte_into_db(now, data)
         print("#" * 255, '\n', now, "-----", data)
+    return JsonResponse({
+        "Finished recording."
+    })
 
 
 def stop_record(request):

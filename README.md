@@ -35,6 +35,35 @@
 
 ### 后端部分
 
+**接口**：
+1. 'analyze/': 分析数据
+    
+    返回值：Json
+    ```
+   {
+         "on_time": double,
+         "be_late": double,
+         "leaving_early": double,
+         "count": interger
+   }
+    ```
+2. 'wirtein/start/': 开始记录人数
+    
+    返回值：
+    ```
+   {
+        "Finished recording."
+   }
+    ```
+3. 'wirtein/stop/': 停止记录 
+    
+    返回值：
+    ```
+   {
+        "Stopped recording! State: 1"
+   }
+    ```
+
 **数据库表的设计**：
 
 表的时间跨度应以年为单位，有对应12列，每列又有对应的天数，每天对应有24小时，每小时对应有60分钟。
