@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Analyze',
+    'WriteIn',
 ]
 
 MIDDLEWARE = [
@@ -81,14 +83,14 @@ DATABASES = {
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'NAME': 'mongodb-attsys',
         # 'ENFORCE_SCHEMA': False,
-        # 'CLIENT': {
-        #     'host': 'host-name or ip address',
-        #     'port': port_number,
-        #     'username': 'db-username',
-        #     'password': 'password',
-        #     'authSource': 'db-name',
-        #     'authMechanism': 'SCRAM-SHA-1'
-        # }
+        'CLIENT': {
+            'host': 'mongodb+srv://sunwenxiang:sunwenxiang@cluster0.6npkrzk.mongodb.net/?retryWrites=true&w=majority',
+            # 'port': port_number,
+            # 'username': 'db-username',
+            # 'password': 'password',
+            # 'authSource': 'db-name',
+            # 'authMechanism': 'SCRAM-SHA-1'
+        }
     }
 }
 
