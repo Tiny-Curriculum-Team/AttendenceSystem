@@ -3,6 +3,8 @@ from datetime import datetime
 import cv2
 import yaml
 
+from .models import  Number
+
 GLOBAL_DATA = yaml.load(open('../config.yml'), Loader=yaml.FullLoader)
 AMOUNT = 0
 STATE = 1
@@ -30,9 +32,9 @@ def stop_record(request):
     return JsonResponse({f"Stopped recording! State: {STATE}"})
 
 
-def wirte_into_db(time: str, amount: int):
-    pass
-
+def wirte_into_db(time, amount: int):
+    new_data = Number(count=amount,date_time=time)
+    new_data.save()
 
 def inference(stream):
     amount = 0
