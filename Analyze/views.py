@@ -1,17 +1,15 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-from datetime import datetime, date
-from calendar import monthrange
-
-from WriteIn.models import Number
-
-from django.db.models import Avg
-
-from django.db.models import Max,Min
-
 import yaml
+from calendar import monthrange
+from django.db.models import Avg
+from WriteIn.models import Number
+from django.shortcuts import render
+from datetime import datetime, date
+from django.http import JsonResponse
+from django.db.models import Max, Min
 
 GLOBAL_DATA = yaml.load(open('../config.yml'), Loader=yaml.FullLoader)
+
+
 # Create your views here.
 def compute(request):
     if request.method == "GET":
