@@ -4,7 +4,7 @@ import numpy as np
 
 model = YOLO('../../models/yolov8n.yaml').load("./models/best.pt")
 path_foundation = r"../../datasets/mydata/css-data/test/person"
-inputs = []
+inputs = [] # images data path list
 for root, _, img_name in os.walk(path_foundation):
     random_list = np.random.randint(low=0, high=len(img_name), size=4)
     for i in random_list:
@@ -13,6 +13,6 @@ results = model(inputs)  # list of Results objects
 total_person = 0
 for n,result in enumerate(results):
     boxes = result.boxes  # Boxes object for bbox outputs
-    total_person += list(boxes.cls).count(5.)
+    total_person += list(boxes.cls).count(5.) # The category of person in the tensor is 5.
     print(f"image_{n} person : {list(boxes.cls).count(5.)}")
 print(total_person)
