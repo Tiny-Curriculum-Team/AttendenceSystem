@@ -1,0 +1,9 @@
+path: ../ultralytics/ultralytics/datasets/mydata
+train: css-data/train
+val: css-data/valid
+test: css-data/test
+
+nc: 10
+names: [Hardhat, Mask, NO-Hardhat, NO-Mask, NO-Safety Vest, Person, Safety Cone,
+    Safety Vest, machinery, vehicle]
+        
