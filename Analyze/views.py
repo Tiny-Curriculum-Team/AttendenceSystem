@@ -7,7 +7,7 @@ from datetime import datetime, date
 from django.http import JsonResponse
 from django.db.models import Max, Min
 
-GLOBAL_DATA = yaml.load(open('../config.yml'), Loader=yaml.FullLoader)
+GLOBAL_DATA = yaml.load(open('./config.yml'), Loader=yaml.FullLoader)
 
 
 # Create your views here.

@@ -27,7 +27,7 @@ def check_data(dir, class_num):
 
 
 if __name__ == '__main__':
-    root_path = "./css-data"  # 你存放数据的文件路径
+    root_path = "css-data"  # 你存放数据的文件路径
     type_data = 'test'  # 便于你更换不同类型的标注文件夹路径
     class_num = [5]  # 在这里放置你需要获取的的标注文件类
 

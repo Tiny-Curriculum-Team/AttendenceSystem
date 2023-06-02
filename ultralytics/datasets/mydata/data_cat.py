@@ -18,7 +18,7 @@ def check_data(root, class_num): # 查看空数据
 
 
 if __name__ == '__main__':
-    root_path = "./css-data" # 你存放数据的文件路径
+    root_path = "css-data"  # 你存放数据的文件路径
     type_data = 'test'  # 便于你更换不同类型的标注文件夹路径
     class_num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # 在这里放置你的标注文件类
     labels_dir = save_catalogue = os.path.join(root_path, type_data,

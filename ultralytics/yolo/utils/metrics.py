@@ -697,7 +697,7 @@ class DetMetrics(SimpleClass):
         results_dict: Returns a dictionary that maps detection metric keys to their computed values.
     """
 
-    def __init__(self, save_dir=Path('.'), plot=False, on_plot=None, names=()) -> None:
+    def __init__(self, save_dir=Path(''), plot=False, on_plot=None, names=()) -> None:
         self.save_dir = save_dir
         self.plot = plot
         self.on_plot = on_plot
@@ -781,7 +781,7 @@ class SegmentMetrics(SimpleClass):
         results_dict: Returns the dictionary containing all the detection and segmentation metrics and fitness score.
     """
 
-    def __init__(self, save_dir=Path('.'), plot=False, on_plot=None, names=()) -> None:
+    def __init__(self, save_dir=Path(''), plot=False, on_plot=None, names=()) -> None:
         self.save_dir = save_dir
         self.plot = plot
         self.on_plot = on_plot
@@ -890,7 +890,7 @@ class PoseMetrics(SegmentMetrics):
         results_dict: Returns the dictionary containing all the detection and segmentation metrics and fitness score.
     """
 
-    def __init__(self, save_dir=Path('.'), plot=False, on_plot=None, names=()) -> None:
+    def __init__(self, save_dir=Path(''), plot=False, on_plot=None, names=()) -> None:
         super().__init__(save_dir, plot, names)
         self.save_dir = save_dir
         self.plot = plot

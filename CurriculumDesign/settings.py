@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Analyze',
     'WriteIn',
+    'ultralytics',
 ]
 
 MIDDLEWARE = [

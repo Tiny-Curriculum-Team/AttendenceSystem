@@ -1,36 +1,48 @@
 import cv2
 import yaml
+import threading
 from .models import Number
 from ultralytics import YOLO
 from datetime import datetime
 from django.http import JsonResponse
 
 
-GLOBAL_DATA = yaml.load(open('../config.yml'), Loader=yaml.FullLoader)
-AMOUNT = 0
-STATE = 1
+GLOBAL_DATA = yaml.load(open('./config.yml'), Loader=yaml.FullLoader)
+thread_one = None
+# def control(num):
+#     tmp=num
+#     while num == 1:
+#         if num == 1:
+#             print("111")
+#         else :
+#             break;
+
+
+def sub_processor():
+    while True:
+        now = datetime.now().strftime("%m:%d:%H:%M")
+        ret, frame = cap.read()
+        cap = cv2.VideoCapture(GLOBAL_DATA['CAMERA_ID'])
+        data = inference(frame)
+        # wirte_into_db(now, data)
+        print("#" * 255, '\n', now, "-----", data)
 
 
 # Create your views here.
 def start_record(request):
-    global STATE
-    STATE = 1
-    while STATE == 1:
-        now = datetime.now().strftime("%m:%d:%H:%M")
-        cap = cv2.VideoCapture(GLOBAL_DATA['CAMERA_ID'])
-        ret, frame = cap.read()
-        data = inference(frame)
-        wirte_into_db(now, data)
-        print("#" * 255, '\n', now, "-----", data)
-    return JsonResponse({
-        "Finished recording."
-    })
+    global thread_one
+    thread_one = threading.Thread(target=sub_processor)
+    thread_one.start()
+    return JsonResponse({f"Started recording! Thread:{thread_one}"}, safe=False)
 
 
 def stop_record(request):
-    global STATE
-    STATE = 0
-    return JsonResponse({f"Stopped recording! State: {STATE}"})
+    global thread_one
+    if thread_one is None:
+        return JsonResponse("None threading running!", safe=False)
+    else:
+        thread_one.stop()
+    return JsonResponse({f"Stopped recording! Thread: {thread_one}"}, safe=False)
 
 
 def wirte_into_db(time, amount: int):
@@ -40,8 +52,10 @@ def wirte_into_db(time, amount: int):
 
 def inference(stream):
     amount = 0
-    model = YOLO('./ultralytics/models/yolov8n.yaml').load("./ultralytics/yolo/v8/models/best.pt")
+    model = YOLO('../../../ultralytics/models/yolov8.yaml').load("./ultralytics/yolo/v8/models/best.pt")
     inputs = [stream]  # images data
+    print("*" * 255)
+    print(type(stream))
     results = model(inputs)  # list of Results objects
 
     for n, result in enumerate(results):
@@ -49,5 +63,6 @@ def inference(stream):
         amount += list(boxes.cls).count(5.)  # The category of person in the tensor is 5.
         # amount = list(boxes.cls).count(5.)  # The category of person in the tensor is 5.
         print(f"Person : {list(boxes.cls).count(5.)}")
+    print("!" * 255)
 
     return amount
