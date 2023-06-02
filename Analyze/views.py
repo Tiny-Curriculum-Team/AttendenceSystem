@@ -40,7 +40,7 @@ def query(time_range: list):
 
 
 #道勤人数
-def arrive_on_time_rate(data):
+def arrive_on_time_number(data):
     date_arrive_on_time_rate=data.objects.all().aggregate(Max('count'))
     return int(date_arrive_on_time_rate.count)
 
