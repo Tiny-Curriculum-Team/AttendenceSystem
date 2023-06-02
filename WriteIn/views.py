@@ -1,9 +1,10 @@
-from django.http import JsonResponse
-from datetime import datetime
 import cv2
 import yaml
+from .models import Number
+from ultralytics import YOLO
+from datetime import datetime
+from django.http import JsonResponse
 
-from .models import  Number
 
 GLOBAL_DATA = yaml.load(open('../config.yml'), Loader=yaml.FullLoader)
 AMOUNT = 0
@@ -36,6 +37,17 @@ def wirte_into_db(time, amount: int):
     new_data = Number(count=amount,date_time=time)
     new_data.save()
 
+
 def inference(stream):
     amount = 0
+    model = YOLO('./ultralytics/models/yolov8n.yaml').load("./ultralytics/yolo/v8/models/best.pt")
+    inputs = [stream]  # images data
+    results = model(inputs)  # list of Results objects
+
+    for n, result in enumerate(results):
+        boxes = result.boxes  # Boxes object for bbox outputs
+        amount += list(boxes.cls).count(5.)  # The category of person in the tensor is 5.
+        # amount = list(boxes.cls).count(5.)  # The category of person in the tensor is 5.
+        print(f"Person : {list(boxes.cls).count(5.)}")
+
     return amount

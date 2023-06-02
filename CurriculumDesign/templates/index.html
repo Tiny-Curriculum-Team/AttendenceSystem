@@ -1,0 +1,391 @@
+<!--更多资源：https://gitee.com/iGaoWei/big-data-view -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="refresh" content="60;url='https://gitee.com/iGaoWei/big-data-view'"> -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>工地人数监测数据可视化平台</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/reset.css">
+</head>
+
+<body>
+    <div id="particles-js" class="main">
+        <div class="main_con">
+            <div class="main_top">
+                <div class="main_top_middle">
+                    <div class="main_top_middle_top_title">
+                        <img class="title_bg" src="./images/title_bg.png">
+                        工地人数监测数据可视化平台
+                    </div>
+                    <div class="main_top_middle_num_title_box">
+                        <div class="main_top_middle_num_title">工地出勤人数</div>
+                        <div class="main_top_middle_num">
+                            <div class="main_top_middle_num_list">
+                                <img src="./images/center_num.png">
+                                <p class="main_top_middle_num_list6">0</p>
+                            </div>
+                            <div class="main_top_middle_num_list">
+                                <img src="./images/center_num.png">
+                                <p class="main_top_middle_num_list5">0</p>
+                            </div>
+                            <div class="main_top_middle_num_list">
+                                <img src="./images/center_num.png">
+                                <p class="main_top_middle_num_list4">1</p>
+                            </div>
+                            <div class="main_top_middle_num_list">
+                                <img src="./images/center_num.png">
+                                <p class="main_top_middle_num_list3">3</p>
+                            </div>
+                            <div class="main_top_middle_num_list">
+                                <img src="./images/center_num.png">
+                                <p class="main_top_middle_num_list2">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="main_middle">
+                <div class="main_middle_list">
+                    <img src="./images/main_middle.png">
+                    <div class="main_list_title main_list_title1">XXX镇</div>
+                    <span class="main_list_title_num main_list_title_num1">0</span>
+                </div>
+                <div class="main_middle_list">
+                    <img src="./images/main_middle.png">
+                    <div class="main_list_title main_list_title2">XX镇</div>
+                    <span class="main_list_title_num main_list_title_num2">0</span>
+                </div>
+                <div class="main_middle_list">
+                    <img src="./images/main_middle.png">
+                    <div class="main_list_title main_list_title3">XXXX</div>
+                    <span class="main_list_title_num main_list_title_num3">0</span>
+                </div>
+                <!-- <div class="main_middle_list">
+                    <img src="./images/main_middle.png">
+                    <div class="main_list_title main_list_title4">XXXX</div>
+                    <span class="main_list_title_num main_list_title_num4">0</span>
+                </div> -->
+            </div>
+            <div class="main_bottom">
+                <div class="main_bottom_top">
+                    <div class="main_bottom_top_list">
+                        <img src="./images/main_bottopm_top2.png">
+                        <div class="main_bottom_t_l_title">工地人数公开占比</div>
+                        <div id="departmentId" class="main_bottom_t_l_chart"></div>
+                    </div>
+                </div>
+                <div class="main_bottom_bottom">
+                    <div class="main_bottom_b_middle2">
+                        <img src="./images/main_bootm_middle.png">
+                        <div class="main_bottom_b_title">某个时间段工地人数</div>
+                        <div id="publicNumId" class="main_bottom_b_con main_bottom_b_con2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="https://www.jq22.com/jquery/echarts-4.2.1.min.js"></script>
+<script type="text/javascript" src="js/dataScoll.js"></script>
+<script type="text/javascript" src="js/digitalScroll.js"></script>
+<script type="text/javascript" src="js/jcarousellite.js"></script>
+<script type="text/javascript" src="js/particles.min.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+
+<script>
+    $(function () {
+        function apiFn() {
+            this.hostname = ""
+        }
+        apiFn.prototype = {
+            Init: function () {
+                this.findCount()
+                this.departmentFn()
+                this.publicNumFn()
+                setInterval(function () {
+                    numInit()
+                }, 6000)
+            },
+            findCount: function () {
+
+            },
+
+            // 各部门苏木镇嘎查村公开占比
+            departmentFn: function () {
+                var dataArr = [
+                    { name: '工地实际人数', value: 150 },
+                    { name: '迟到人数', value: 30 },
+                    { name: '早退人数', value: 25 },
+                ]
+                // 中间滚动数据展示
+                for (var j = 0; j < dataArr.length; j++) {
+                    $(".main_list_title_num" + (j + 1)).addClass("counter-value").text(dataArr[j].value)
+                    $(".main_list_title" + (j + 1)).text(dataArr[j].name)
+                }
+                var dataArr2 = [
+                    { name: '到勤率', value: 130 },
+                    { name: '迟到率', value: 30 },
+                    { name: '早退率', value: 25 },
+                    { name: '缺勤率', value: 20 },
+                    // { name: '人均迟到次数', value: 350 },
+                    // { name: '总迟到次数', value: 363 },
+                ]
+                var data = dataArr2
+                var departmentChart = echarts.init(document.getElementById('departmentId'));
+
+                var option = {
+                    color: ['#FD9133', '#47F6A2', '#37D2D4', '#3493FF'],
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        itemWidth: 15,// 标志图形的长度
+                        itemHeight: 15,// 标志图形的宽度
+                        orient: 'vertical',
+                        // left: 'right',
+                        top: '30%',
+                        bottom: '4%',
+                        x: '5%',
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 12,
+
+                        },
+                        data: data,
+                    },
+                    series: [
+                        {
+                            name: '工地人数公开占比',
+                            type: 'pie',
+                            radius: ['50%', '70%'],
+                            center: ['71%', '55%'],
+                            labelLine: {
+                                normal: {
+                                    length: 12,
+                                    lineStyle: {
+                                        type: 'solid',
+                                        color: '#0EFCFF'
+                                    }
+                                }
+
+                            },
+                            label: {
+                                normal: {
+                                    formatter: (params) => {
+                                        return params.name
+                                    },
+                                    borderWidth: 0,
+                                    borderRadius: 4,
+                                    padding: [0, 0],
+                                    height: 20,
+                                    fontSize: 10,
+                                    align: 'center',
+                                    color: '#0EFCFF',
+                                }
+                            },
+                            data: data
+                        },
+                        {
+                            color: '#0EFCFF',
+                            type: 'pie',
+                            radius: ['55', '56'],
+                            center: ['71%', '55%'],
+                            data: [100],
+                            label: {
+                                show: false
+                            }
+                        },
+                        {
+                            type: 'pie',
+                            radius: ['25', '26'],
+                            center: ['71%', '55%'],
+                            data: [100],
+                            label: {
+                                show: false
+                            }
+                        }
+                    ]
+                };
+                departmentChart.setOption(option)
+                setInterval(function () {
+                    departmentChart.clear()
+                    departmentChart.setOption(option)
+                }, 12000)
+            },
+
+            // 巡察
+            publicNumFn: function () {
+                var resArr = [
+                    { name: '8:00-9:00', value: 300 },
+                    { name: '9:00-10:00', value: 1012 },
+                    { name: '10:00-11:00', value: 1012 },
+                    { name: '11:00-12:00', value: 350 },
+                    { name: '14:00-15:00', value: 363 },
+                    { name: '15:00-16:00', value: 800 },
+                    { name: '16:00-17:00', value: 1130 },
+                    { name: '17:00-18:00', value: 800 },
+                ]
+                var dateArr = []
+                var daoArr = [108, 120, 128, 129, 128, 130, 126, 112]
+                var chiArr = [12, 10, 20, 0, 4, 4, 0, 0]
+                var zaoArr = [0, 0, 12, 5, 3, 2, 4, 14]
+                for (var i = 0; i < resArr.length; i++) {
+                    // xunArr.push(resArr[i].value)
+                    // jingArr.push(resArr[i].value)
+                    dateArr.push(resArr[i].name)
+                }
+                var publicNumChart = echarts.init(document.getElementById('publicNumId'));
+                var option = {
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        x: '45%',
+                        y: '0%',
+                        data: ['到岗', '迟到', '早退'],
+                        textStyle: {
+                            color: "#fff",
+                            fontSize: 12
+                        },
+                        itemWidth: 10,
+                        itemHeight: 10,
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: dateArr,
+                            axisLabel: {
+                                interval: 0,
+                                textStyle: {
+                                    fontSize: 12,
+                                    color: 'rgba(255,255,255,.7)',
+                                }
+                            },
+                            "axisTick": {       //y轴刻度线
+                                "show": false
+                            },
+                            "axisLine": {       //y轴
+                                "show": false,
+                            },
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            scale: true,
+                            name: '单位：人',
+                            nameTextStyle: {
+                                color: 'rgba(255,255,255,.7)',
+                                fontSize: 12
+                            },
+                            max: 150,
+                            min: 0,
+                            boundaryGap: [0.2, 0.2],
+                            "axisTick": {       //y轴刻度线
+                                "show": false
+                            },
+                            "axisLine": {       //y轴
+                                "show": false,
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    color: 'rgba(255,255,255,.8)',
+                                    fontSize: 12
+                                    // opacity: 0.1,
+                                }
+                            },
+                            splitLine: {  //决定是否显示坐标中网格
+                                show: true,
+                                lineStyle: {
+                                    color: ['#fff'],
+                                    opacity: 0.2
+                                }
+                            },
+                        },
+                        {
+                            type: 'value',
+                            scale: true,
+                            show: false,
+                            // name: "销量额(万元)",
+                            nameTextStyle: {
+                                color: 'rgba(255,255,255,.2)',
+                            },
+                            max: 1,
+                            min: 0,
+                            boundaryGap: [0.2, 0.2],
+                            "axisTick": {       //y轴刻度线
+                                "show": false
+                            },
+                            "axisLine": {       //y轴
+                                "show": false,
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    color: 'rgba(255,255,255,.2)',
+                                    // opacity: 0.1,
+                                }
+                            },
+                            splitLine: {  //决定是否显示坐标中网格
+                                show: true,
+                                lineStyle: {
+                                    color: ['#fff'],
+                                    opacity: 0.2
+                                }
+                            },
+
+                        }
+                    ],
+                    color: ['#2E8CFF', '#38EB70', '#0efcff'],
+                    grid: {
+                        left: '4%',
+                        right: '4%',
+                        top: '3%',
+                        bottom: '15%'
+                        // containLabel: true
+                    },
+                    series: [
+                        {
+                            animationDuration: 2500,
+                            barWidth: '20%',
+                            name: '到岗',
+                            type: 'bar',
+                            data: daoArr,
+                        },
+                        {
+                            barWidth: '20%',
+                            name: '迟到',
+                            type: 'bar',
+                            data: chiArr,
+                        },
+                        {
+                            barWidth: '20%',
+                            name: '早退',
+                            type: 'bar',
+                            data: zaoArr,
+                        }
+                    ],
+                    animationEasing: 'cubicOut'
+                };
+                publicNumChart.setOption(option)
+                setInterval(function () {
+                    publicNumChart.clear()
+                    publicNumChart.setOption(option)
+                }, 60000)
+            }
+
+        }
+        var start = new apiFn()
+        start.Init()
+    })
+</script>
