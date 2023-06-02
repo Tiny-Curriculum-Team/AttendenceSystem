@@ -19,13 +19,26 @@ thread_one = None
 
 
 def sub_processor():
-    while True:
-        now = datetime.now().strftime("%m:%d:%H:%M")
-        ret, frame = cap.read()
-        cap = cv2.VideoCapture(GLOBAL_DATA['CAMERA_ID'])
-        data = inference(frame)
-        # wirte_into_db(now, data)
-        print("#" * 255, '\n', now, "-----", data)
+    # while True:
+    #     now = datetime.now().strftime("%m:%d:%H:%M")
+    #     ret, frame = cap.read()
+    #     cap = cv2.VideoCapture(GLOBAL_DATA['CAMERA_ID'])
+    #     data = inference(frame)
+    #     # wirte_into_db(now, data)
+    #     print("#" * 255, '\n', now, "-----", data)
+    amount = 0
+    model = YOLO('../../../ultralytics/models/yolov8.yaml').load("./ultralytics/yolo/v8/models/best.pt")
+    try:
+        results = model.predict(source=0, stream=True)
+    except Exception:
+        results = model.predict(source=1, stream=True)
+
+    for n, result in enumerate(results):
+        boxes = result.boxes  # Boxes object for bbox outputs
+        amount += list(boxes.cls).count(5.)  # The category of person in the tensor is 5.
+        # amount = list(boxes.cls).count(5.)  # The category of person in the tensor is 5.
+        print(f"Person : {list(boxes.cls).count(5.)}")
+    print("!" * 255)
 
 
 # Create your views here.
